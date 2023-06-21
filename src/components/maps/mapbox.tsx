@@ -146,27 +146,56 @@ const MapboxGL = () => {
         source: 'lumbini',
         filter: ['!', ['has', 'point_count']],
         layout: {
-          'icon-image': ['get', 'type'],
+          'icon-image': ['get', 'types'],
           'icon-size': 0.7,
         },
       });
 
+      // async function getLocation() {
+      //   return fetch('https://a16c-103-10-31-27.ngrok-free.app/map', {
+      //     method: 'GET',
+      //     headers: new Headers({
+      //       'ngrok-skip-browser-warning': '69420',
+      //     }),
+      //   })
+      //     .then((res) => res.json())
+      //     .then((data) => {
+      //       console.log('<==========================>');
+      //       console.log(data);
+      //     })
+      //     .catch((error) => {
+      //       console.log('Error');
+      //       console.error(error);
+      //     });
+      // }
+
       async function getLocation() {
-        return fetch('https://a16c-103-10-31-27.ngrok-free.app/map', {
-          method: 'GET',
-          headers: new Headers({
-            'ngrok-skip-browser-warning': '69420',
-          }),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log('<==========================>');
-            console.log(data);
-          })
-          .catch((error) => {
-            console.log('Error');
-            console.error(error);
-          });
+        // Make a GET request to the API and return the location of the ISS.
+        try {
+          const response = await fetch(
+            'https://dc33-103-10-31-27.ngrok-free.app/map',
+            {
+              method: 'GET',
+              headers: new Headers({
+                'ngrok-skip-browser-warning': '69420',
+              }),
+            },
+          );
+
+          const data = await response.json();
+
+          const { features } = data;
+
+          console.log('---------');
+          console.log(features);
+
+          return {
+            type: 'FeatureCollection',
+            features: features,
+          };
+        } catch (err: any) {
+          throw new Error(err);
+        }
       }
 
       map.on('mouseenter', 'clusters', () => {

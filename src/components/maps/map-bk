@@ -9,7 +9,7 @@ import { GeoJsonObject } from 'geojson';
 
 import './map.scss';
 
-const trekkingRoutes = await import('@/data/trekkingRoutes.json');
+// const trekkingRoutes = await import('@/data/trekkingRoutes.json');
 
 interface MapTypes {
   mapStyle: MapStyleTypes;
