@@ -1,0 +1,8 @@
+.leaflet-container {
+  @apply w-screen h-screen;
+}
+
+.map-container {
+  @apply overflow-hidden;
+  border-radius: 12px;
+}

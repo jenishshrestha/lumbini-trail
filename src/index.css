@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  @apply text-base font-urbanist;
+
+  /* for smooth scroll */
+  /* @apply overflow-hidden; */
+}
+
+#root {
+  width: 100%;
+}
+
+/* for smooth scroll */
+/* #root > div {
+  @apply fixed top-0 left-0 w-full h-screen;
+} */
+
+::selection {
+  color: red;
+  background: yellow;
+}

@@ -1,0 +1,15 @@
+.main-logo {
+  svg {
+    @apply inline-block h-[1em] text-[308px] mb-10;
+  }
+}
+
+.primary-header {
+  @apply fixed left-0 top-0 w-full;
+  > svg {
+    @apply h-[728px] absolute;
+    left: calc(50% + 15px);
+    top: calc(50% + 15px);
+    transform: translate(-50%, -50%);
+  }
+}

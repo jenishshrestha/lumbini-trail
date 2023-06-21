@@ -1,0 +1,63 @@
+import { useState } from 'react';
+
+import { MapStyleTypes, OptionNamesTypes, OptionTypes } from '@/types';
+
+interface FilterTypes {
+  mapStyle: MapStyleTypes;
+  setMapStyle: React.Dispatch<React.SetStateAction<MapStyleTypes>>;
+  options: OptionTypes;
+  setOptions: React.Dispatch<React.SetStateAction<OptionTypes>>;
+}
+
+const Filters = ({ mapStyle, setMapStyle }: FilterTypes) => {
+  /**
+   * Handle map style radio button change
+   */
+  const handleMapStyleChange = (event: any) => {
+    setMapStyle(event.target.value);
+  };
+
+  return (
+    <>
+      <div className='map-filter bg-primary'>
+        <div className='logo'></div>
+        <div className='filters'>
+          <ul>
+            <li>
+              <div className='field-radio'>
+                <input
+                  id={'map-osm'}
+                  name='map-style'
+                  type='radio'
+                  value='osm'
+                  onChange={handleMapStyleChange}
+                  checked={mapStyle === 'osm'}
+                  className=''
+                />
+                <label htmlFor={'map-osm'} className=''>
+                  OSM
+                </label>
+              </div>
+              <div className='field-radio'>
+                <input
+                  id={'map-satellite'}
+                  name='map-style'
+                  type='radio'
+                  value='satellite'
+                  onChange={handleMapStyleChange}
+                  checked={mapStyle === 'satellite'}
+                  className=''
+                />
+                <label htmlFor={'map-satellite'} className=''>
+                  Satellite
+                </label>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Filters;

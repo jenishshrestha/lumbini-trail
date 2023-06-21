@@ -1,0 +1,19 @@
+// .mapboxgl-wrapper {
+//   @apply h-screen w-full relative z-10;
+// }
+
+.map-container {
+  @apply overflow-hidden;
+  border-radius: 12px;
+
+  .map {
+    // @apply absolute left-0 top-0 w-full h-full;
+    @apply h-screen;
+    width: 99vw;
+  }
+}
+
+.mapboxgl-ctrl-attrib,
+.mapboxgl-ctrl-bottom-left {
+  @apply hidden;
+}
