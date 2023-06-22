@@ -21,7 +21,7 @@ const MapboxGL = () => {
     { imageUrl: 'src/assets/markerIcons/bus.png', id: 'l-bus' },
     { imageUrl: 'src/assets/markerIcons/dollar.png', id: 'l-dollar' },
     { imageUrl: 'src/assets/markerIcons/graduation.png', id: 'l-graduation' },
-    { imageUrl: 'src/assets/markerIcons/hospital.png', id: 'l-hospital' },
+    { imageUrl: 'src/assets/markerIcons/hospital.png', id: 'hospitals' },
     { imageUrl: 'src/assets/markerIcons/parking.png', id: 'l-parking' },
     { imageUrl: 'src/assets/markerIcons/restaurant.png', id: 'l-restaurant' },
     {
@@ -36,7 +36,7 @@ const MapboxGL = () => {
     const map = new mapboxgl.Map({
       container:
         mapContainerRef.current === undefined ||
-        mapContainerRef.current === null
+          mapContainerRef.current === null
           ? ''
           : mapContainerRef.current,
       style: 'mapbox://styles/mapbox/light-v11',
@@ -146,7 +146,7 @@ const MapboxGL = () => {
         source: 'lumbini',
         filter: ['!', ['has', 'point_count']],
         layout: {
-          'icon-image': ['get', 'types'],
+          'icon-image': 'hospitals',
           'icon-size': 0.7,
         },
       });
@@ -170,15 +170,15 @@ const MapboxGL = () => {
       // }
 
       async function getLocation() {
-        // Make a GET request to the API and return the location of the ISS.
-        try {
+         // Make a GET request to the API and return the location of the ISS.
+         try {
           const response = await fetch(
-            'https://dc33-103-10-31-27.ngrok-free.app/map',
+            'http://localhost:3002/map',
             {
               method: 'GET',
-              headers: new Headers({
-                'ngrok-skip-browser-warning': '69420',
-              }),
+              // headers: new Headers({
+              //   'ngrok-skip-browser-warning': '69420',
+              // }),
             },
           );
 
@@ -191,11 +191,22 @@ const MapboxGL = () => {
 
           return {
             type: 'FeatureCollection',
+<<<<<<< Updated upstream
             features: features,
+=======
+            features: Object.values(features),
+>>>>>>> Stashed changes
           };
         } catch (err: any) {
           throw new Error(err);
         }
+<<<<<<< Updated upstream
+=======
+        // return await fetch('http://localhost:3002/map', {
+        //   method: 'GET'
+        // })
+        
+>>>>>>> Stashed changes
       }
 
       map.on('mouseenter', 'clusters', () => {
