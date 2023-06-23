@@ -28,6 +28,17 @@ module.exports = {
     fontFamily: {
       urbanist: ['Urbanist', 'sans-serif'],
     },
+    extend: {
+      fontSize: {
+        'heading-1': '64px',
+        'heading-2': '48px',
+        'heading-3': '32px',
+        'heading-4': '24px',
+        'heading-5': '16px',
+        'heading-6': '14px',
+        'caption-c1': '12px',
+      },
+    },
     // extend: {
     //   backgroundImage: {
     //     'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

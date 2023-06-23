@@ -21,6 +21,7 @@ export default defineConfig({
     'process.env': {
       MAP_BOX_ACCESS_TOKEN:
         'pk.eyJ1IjoiamVycnlzaHJlc3RoYSIsImEiOiJjbGozdXJhcjAwcGp2M2pvMGNpZ3Z5cHp2In0.nNhUtM8bSN4oCgDNvXdz2A',
+      MAP_API: 'http://localhost:3002/map',
     },
   },
   envDir: 'env',

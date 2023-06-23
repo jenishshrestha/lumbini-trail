@@ -10,9 +10,3 @@ export type OptionTypes = {
   water: boolean;
   trekkingRoutes: boolean;
 };
-
-// Options names
-export type OptionNamesTypes = 'trekkingRoutes';
-
-// Map style types
-export type MapStyleTypes = 'osm' | 'satellite';

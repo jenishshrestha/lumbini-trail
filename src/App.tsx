@@ -36,24 +36,24 @@ const App = () => {
       paddingTop();
 
       // scroll trigger animation
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: mapContainer.current,
-          start: 'top center',
-          // end: 'bottom+=1000',
-          toggleActions: 'play pause resume reverse',
-          // onEnter onLeave onEnterBack onLeaveBack
-          // markers: true,
-          // scrub: true,
-          // pin: true,
-        },
-      });
+      // const tl = gsap.timeline({
+      //   scrollTrigger: {
+      //     trigger: mapContainer.current,
+      //     start: 'top center',
+      //     // end: 'bottom+=1000',
+      //     toggleActions: 'play pause resume reverse',
+      //     // onEnter onLeave onEnterBack onLeaveBack
+      //     // markers: true,
+      //     // scrub: true,
+      //     // pin: true,
+      //   },
+      // });
 
-      tl.to(mapContainer.current, {
-        ease: 'linear',
-        maxWidth: '100%',
-        duration: 0.5,
-      });
+      // tl.to(mapContainer.current, {
+      //   ease: 'linear',
+      //   maxWidth: '100%',
+      //   duration: 0.5,
+      // });
     });
     return () => {
       ctx.revert();
@@ -77,7 +77,7 @@ const App = () => {
 
       <div
         ref={mapContainer}
-        className='mx-auto map-container'
+        className='relative mx-auto map-container'
         style={{ maxWidth: '1227px' }}
       >
         <MapboxGl />
