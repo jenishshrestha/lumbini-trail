@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import svgr from 'vite-plugin-svgr';
 
@@ -15,16 +15,8 @@ export default defineConfig({
     },
     host: true, // needed for the Docker Container port mapping to work
     strictPort: true,
-    port: 3005, // you can replace this port with any port
+    port: 3006, // you can replace this port with any port
   },
-  define: {
-    'process.env': {
-      MAP_BOX_ACCESS_TOKEN:
-        'pk.eyJ1IjoiamVycnlzaHJlc3RoYSIsImEiOiJjbGozdXJhcjAwcGp2M2pvMGNpZ3Z5cHp2In0.nNhUtM8bSN4oCgDNvXdz2A',
-      MAP_API: 'http://localhost:3002/map',
-    },
-  },
-  envDir: 'env',
   resolve: {
     alias: [{ find: '@', replacement: '/src' }],
   },

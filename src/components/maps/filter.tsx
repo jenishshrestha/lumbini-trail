@@ -1,68 +1,52 @@
-import { ChangeEventHandler } from 'react';
+// global constants
+import { assetIcons } from '@/utils/constants';
+
+/// <reference types="vite-plugin-svgr/client" />
+import { ReactComponent as FolderIcon } from '@/assets/svgIcons/folder.svg';
+
+import './filter.scss';
 
 const MarkerFilter = () => {
   return (
     <>
-      <div className='map-overlay top'>
-        <div className='map-overlay-inner'>
-          <ul>
-            <li>
-              <h2 className='category-title'>Natural Landmarks</h2>
-              <ul>
-                <li>
-                  <label>
-                    <span>Park</span>
-                    <input className='asset-filter' type='checkbox' id='park' />
-                  </label>
-                </li>
-                <li>
-                  <label>
-                    <span>Sanctuary</span>
-                    <input
-                      className='asset-filter'
-                      type='checkbox'
-                      id='sanctuary'
-                    />
-                  </label>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <h2 className='category-title'>Cultural/ Religious</h2>
-              <ul>
-                <li>
-                  <label>
-                    <span>Temple</span>
-                    <input
-                      className='asset-filter'
-                      type='checkbox'
-                      id='temple'
-                    />
-                  </label>
-                </li>
-                <li>
-                  <label>
-                    <span>Monastery</span>
-                    <input
-                      className='asset-filter'
-                      type='checkbox'
-                      id='monastry'
-                    />
-                  </label>
-                </li>
-                <li>
-                  <label>
-                    <span>Mosque</span>
-                    <input
-                      className='asset-filter'
-                      type='checkbox'
-                      id='mosque'
-                    />
-                  </label>
-                </li>
-              </ul>
-            </li>
-          </ul>
+      <div className='map-overlay'>
+        <div>
+          <div className='map-overlay-inner'>
+            <ul className='marker-filter'>
+              {Object.keys(assetIcons).map((key, index) => {
+                const keyOfObj = key as keyof typeof assetIcons;
+                return (
+                  <li key={index}>
+                    <h2 className='category-title'>
+                      <FolderIcon />
+                      <span>{keyOfObj}</span>
+                    </h2>
+                    <ul>
+                      {typeof assetIcons[keyOfObj] === 'object' &&
+                      assetIcons[keyOfObj] !== null
+                        ? assetIcons[keyOfObj].map((subkey, i) => {
+                            return (
+                              <>
+                                <li key={i}>
+                                  <label>
+                                    <span>{subkey.type}</span>
+                                    <input
+                                      className='asset-filter'
+                                      type='checkbox'
+                                      id={subkey.type}
+                                    />
+                                  </label>
+                                </li>
+                              </>
+                            );
+                          })
+                        : ''}
+                    </ul>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </div>
       </div>
     </>

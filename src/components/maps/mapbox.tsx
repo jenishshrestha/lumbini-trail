@@ -1,16 +1,28 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 
+// mapbox module
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-import './mapbox.scss';
-
+// Marker Filter Component
 import MarkerFilter from './filter';
 
+// getting data temporarily from json file
 import geojson from '@/data/lumbini.json';
 
-mapboxgl.accessToken =
-  'pk.eyJ1IjoiamVycnlzaHJlc3RoYSIsImEiOiJjbGozdXJhcjAwcGp2M2pvMGNpZ3Z5cHp2In0.nNhUtM8bSN4oCgDNvXdz2A';
+// global constants
+import { assetIcons } from '@/utils/constants';
+
+// global typescript interface
+import { assetIconsTypes } from '@/types';
+
+// map box custom styles
+import './mapbox.scss';
+
+//getting data from api
+// import { getLocation } from '@/utils/fetch-api';
+
+mapboxgl.accessToken = import.meta.env.VITE_MAP_BOX_ACCESS_TOKEN;
 
 const MapboxGL = () => {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
@@ -20,63 +32,51 @@ const MapboxGL = () => {
     id: string;
   }
 
-  // defining markers to register in the map
-  const markers: MarkerTypes[] = [
-    { imageUrl: 'src/assets/markerIcons/airport.png', id: 'airport/helipad' },
-    {
-      imageUrl: 'src/assets/markerIcons/building.png',
-      id: 'public-library/art-gallery',
-    },
-    {
-      imageUrl: 'src/assets/markerIcons/bus.png',
-      id: 'bus-park/taxi-stand',
-    },
-    {
-      imageUrl: 'src/assets/markerIcons/dollar.png',
-      id: 'bank/atm/currency-exchange-counter',
-    },
-    { imageUrl: 'src/assets/markerIcons/graduation.png', id: 'university' },
-    {
-      imageUrl: 'src/assets/markerIcons/hospital.png',
-      id: 'hospital/health-posts',
-    },
-    { imageUrl: 'src/assets/markerIcons/parking.png', id: 'vehicle-parking' },
-    { imageUrl: 'src/assets/markerIcons/restaurant.png', id: 'gourmet-place' },
-    {
-      imageUrl: 'src/assets/markerIcons/park.png',
-      id: 'park/garden',
-    },
-    { imageUrl: 'src/assets/markerIcons/student.png', id: 'school/college' },
-    { imageUrl: 'src/assets/markerIcons/temple.png', id: 'temple' },
-    {
-      imageUrl: 'src/assets/markerIcons/market.png',
-      id: 'shopping-store/market',
-    },
-    {
-      imageUrl: 'src/assets/markerIcons/rental.png',
-      id: 'vehicle-rental-facilities-(bike,-car)',
-    },
-    {
-      imageUrl: 'src/assets/markerIcons/gas-station.png',
-      id: 'gas-station',
-    },
-    {
-      imageUrl: 'src/assets/markerIcons/sanctuary.png',
-      id: 'sanctuary',
-    },
-  ];
+  /**
+   *  defining markers to register in the map
+   */
+  const markers: MarkerTypes[] = [];
+
+  const iterate = (obj: assetIconsTypes) => {
+    Object.keys(obj).forEach((key) => {
+      const keyOfObj = key as keyof typeof obj;
+
+      if (typeof obj[keyOfObj] === 'object' && obj[keyOfObj] !== null) {
+        obj[keyOfObj].forEach(function (value) {
+          const item = {
+            imageUrl: `src/assets/markerIcons/${value['icon']}.png`,
+            id: value['type'],
+          };
+
+          markers.push(item);
+        });
+      }
+    });
+  };
+
+  iterate(assetIcons);
+
+  /**
+   * HTML Elements
+   */
+  const markerCheckboxes = document.getElementsByClassName(
+    'asset-filter',
+  ) as HTMLCollectionOf<HTMLInputElement>;
 
   useEffect(() => {
+    /**
+     * Initializing mapbox gl
+     */
     const map = new mapboxgl.Map({
       container:
         mapContainerRef.current === undefined ||
         mapContainerRef.current === null
           ? ''
           : mapContainerRef.current,
-      style: 'mapbox://styles/mapbox/light-v11',
-      center: [84.124, 28.3949],
-      zoom: 8,
-      minZoom: 8,
+      style: 'mapbox://styles/anjan-yi/clj8be7s5008a01p9f98p4nv6',
+      center: [83.0469, 27.5518],
+      zoom: 10.5,
+      minZoom: 10.5,
       maxZoom: 20,
     });
 
@@ -87,21 +87,26 @@ const MapboxGL = () => {
     map.scrollZoom.disable();
 
     map.on('load', async () => {
-      map.flyTo({
-        center: [83.0469, 27.5518],
-        speed: 0.5,
-        zoom: 10,
-      });
+      // map.flyTo({
+      //   center: [83.0469, 27.5518],
+      //   speed: 0.5,
+      //   zoom: 10,
+      // });
 
       // calling api for data
       // const geojson = await getLocation();
-      // add route lines
+
+      /**
+       * add route lines
+       */
       map.addSource('route', {
         type: 'geojson',
         data: 'src/data/trail.geojson',
       });
 
-      // route styles
+      /**
+       * route styles
+       */
       map.addLayer({
         id: 'route',
         type: 'line',
@@ -116,59 +121,19 @@ const MapboxGL = () => {
         },
       });
 
-      // Add a new source from our GeoJSON data
+      /**
+       * Add a new source from our GeoJSON data
+       */
       map.addSource('lumbini', {
         type: 'geojson',
         // @ts-ignore
         // data: geojson,
         data: geojson,
-        // cluster: true,
-        // clusterMaxZoom: 14,
-        // clusterRadius: 50,
       });
 
-      // Clustering the massive data
-      // map.addLayer({
-      //   id: 'clusters',
-      //   type: 'circle',
-      //   source: 'lumbini',
-      //   filter: ['has', 'point_count'],
-      //   paint: {
-      //     'circle-color': [
-      //       'step',
-      //       ['get', 'point_count'],
-      //       '#4470E0',
-      //       100,
-      //       '#f1f075',
-      //       750,
-      //       '#f28cb1',
-      //     ],
-      //     'circle-radius': [
-      //       'step',
-      //       ['get', 'point_count'],
-      //       20,
-      //       100,
-      //       30,
-      //       750,
-      //       40,
-      //     ],
-      //   },
-      // });
-
-      // display cluster with count number
-      // map.addLayer({
-      //   id: 'cluster-count',
-      //   type: 'symbol',
-      //   source: 'lumbini',
-      //   filter: ['has', 'point_count'],
-      //   layout: {
-      //     'text-field': ['get', 'point_count_abbreviated'],
-      //     'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-      //     'text-size': 12,
-      //   },
-      // });
-
-      // register markers for different types of locations
+      /**
+       * register markers for different types of locations
+       */
       markers.forEach((img) => {
         map.loadImage(img.imageUrl, function (error, image: any) {
           if (error) throw error;
@@ -176,64 +141,55 @@ const MapboxGL = () => {
         });
       });
 
-      //marker of unclustered point
+      /**
+       * marker layer of assets
+       */
       map.addLayer({
-        id: 'unclustered-points',
+        id: 'assets',
         type: 'symbol',
         source: 'lumbini',
         filter: ['!', ['has', 'point_count']],
         layout: {
           'icon-image': ['get', 'category'],
-          'icon-size': ['interpolate', ['linear'], ['zoom'], 10, 0.2, 20, 1],
+          'icon-size': ['interpolate', ['linear'], ['zoom'], 10, 0.2, 20, 1.4],
           'icon-allow-overlap': true,
         },
       });
 
+      // this function will be called whenever a checkbox is toggled
+      const updateMarkerIcons = () => {
+        const checkedSymbols = [...markerCheckboxes]
+          .filter((el) => el.checked)
+          .map((el) => el.id);
+
+        map.setFilter('assets', ['in', 'category', ...checkedSymbols]);
+      };
+
       /**
-       * Api call function
-       * @returns geojson data for map
+       * get an array of all unique `icon` properties
        */
-      // async function getLocation() {
-      //   try {
-      //     const response = await fetch(process.env.MAP_API as string, {
-      //       method: 'GET',
-      //       // headers: new Headers({
-      //       //   'ngrok-skip-browser-warning': '69420',
-      //       // }),
-      //     });
-
-      //     const data = await response.json();
-
-      //     const { features } = data;
-
-      //     return {
-      //       type: 'FeatureCollection',
-      //       features: features,
-      //     };
-      //   } catch (err: any) {
-      //     throw new Error(err);
-      //   }
-      // }
-
-      // get an array of all unique `icon` properties
       const symbols: string[] = [];
 
-      // looping through features
       for (const feature of geojson.features) {
         const symbol = feature.properties.category;
         if (!symbols.includes(symbol)) symbols.push(symbol);
       }
 
-      map.on('mouseenter', 'clusters', () => {
-        map.getCanvas().style.cursor = 'pointer';
-      });
-      map.on('mouseleave', 'clusters', () => {
-        map.getCanvas().style.cursor = '';
+      /**
+       * for each checkbox filter, add event listener
+       */
+      Array.from(markerCheckboxes).forEach(function (element) {
+        element.addEventListener('change', updateMarkerIcons);
       });
     });
 
     // Clean up on unmount
-    return () => map.remove();
+    return () => {
+      // Array.from(markerCheckboxes).forEach(function (element) {
+      //   element.removeEventListener('change', updateMarkerIcons);
+      // });
+      map.remove();
+    };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (

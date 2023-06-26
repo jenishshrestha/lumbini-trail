@@ -1,0 +1,44 @@
+/**
+**  Filter styles
+**/
+.map-overlay {
+  @apply absolute left-14 top-10 bg-white p-6 w-[280px];
+  left: 56px;
+  top: 41px;
+  max-height: calc(100% - 91px);
+  overflow: auto;
+  display: 'flex';
+}
+
+.category-title {
+  @apply flex text-black text-sm leading-[1.2];
+
+  svg {
+    @apply shrink-0 mt-1 mr-1;
+  }
+  span {
+    @apply grow font-bold;
+  }
+}
+
+.marker-filter {
+  ul {
+    @apply my-2.5 ml-5;
+
+    li {
+      @apply border-b border-[#E3EBF0] text-sm leading-[1.2];
+
+      label {
+        @apply flex py-2.5 capitalize cursor-pointer;
+      }
+
+      span {
+        @apply grow;
+      }
+
+      .asset-filter {
+        @apply shrink-0;
+      }
+    }
+  }
+}

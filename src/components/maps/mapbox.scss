@@ -15,10 +15,3 @@
 .mapboxgl-ctrl-bottom-left {
   @apply hidden;
 }
-
-/**
-**  Filter styles
-**/
-.map-overlay {
-  @apply absolute left-14 top-10 bg-white p-6 w-[280px];
-}
